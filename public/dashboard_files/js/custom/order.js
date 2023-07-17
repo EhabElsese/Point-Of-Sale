@@ -86,34 +86,45 @@ $(document).ready(function () {
 
     });//end of click function
 
-    // $(document).on('click', '.order-status-btn', function(e) {
-    //     e.preventDefault();
+    $(document).on('click', '.order-status-btn', function(e) {
+        e.preventDefault();
     
-        
-    //     var orderUrl = $(this).data('url');
     
-        
-        
+            var that = $(this);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     
-    //     $.ajax({
-    //         url: orderUrl,
-    //         type: "POST",
-    //         data: {
-    //             _token: '{{ csrf_token() }}',
-    //         },
+        $.ajax({
+            url: that.data('url'),
+            type: "post",
+            data: {
             
-    //         success: function(response) {
-    //             if (response.success) {
-    //                 $(this).removeClass('btn-warning ').addClass('btn-success disabled');
-    //             } 
-    //         },
-    //         error: function(xhr, textStatus, errorThrown) {
-    //             console.log('Error:', errorThrown);
-    //             console.log('Status:', textStatus);
-    //             console.log('XHR:', xhr);
-    //         }
-    //     });
-    // });
+                id : that.data('id')
+            },
+            
+            success: function(response) {
+                
+                new Noty({
+                    type: 'success',
+                    layout: 'topRight',
+                    text: "{{ __(site.updated_successfully) }}",
+                    timeout: 2000,
+                    killer: true
+                }).show();
+                
+                that.removeClass('btn-warning ').addClass('btn-success disabled').text(response.trans);
+                
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+                console.log('Status:', textStatus);
+                console.log('XHR:', xhr);
+            }
+        });
+    });
 
 });//end of document ready
 

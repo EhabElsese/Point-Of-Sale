@@ -13,7 +13,7 @@ class OrderController extends Controller
         $orders = Order::whereHas('client', function ($q) use ($request) {
 
             return $q->where('name', 'like', '%' . $request->search . '%');
-        })->orderBy('created_at', 'desc')->paginate(5);
+        })->orderBy('created_at', 'desc')->paginate(10);
 
         return view('dashboard.orders.index', compact('orders'));
     } //end of index
@@ -24,13 +24,16 @@ class OrderController extends Controller
         return view('dashboard.orders._products', compact('order', 'products'));
     } //end of products
 
-    public function updateStatus($id)
+    public function updateStatus(Request $request)
     {
-        $order = Order::find($id);
+        
+        $order = Order::find($request->id);
         $order->update(['status' => 'deliverd']);
         $order->save();
-        return redirect()->route('dashboard.orders.index');
-        //return response()->json(['success' => true]);
+
+       
+        // return redirect()->route('dashboard.orders.index');
+        return response()->json(['success' => true,"trans"=>__("site.{$order->status}")]);
     } //end of products
 
     public function destroy(Order $order)

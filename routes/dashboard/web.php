@@ -21,7 +21,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             //order routes
             Route::resource('orders', 'OrderController');
             Route::get('/orders/{order}/products', 'OrderController@products')->name('orders.products');
-            Route::post('/orders/{order}/updateStatus', 'OrderController@updateStatus')->name('orders.update_status');
+            Route::post('/orders/updateStatus', 'OrderController@updateStatus')->name('orders.update_status');
 
 
             //user routes
