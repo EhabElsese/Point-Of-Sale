@@ -32,10 +32,18 @@
 
                                 <div class="row">
 
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
                                     </div>
-
+                                    <div class="col-md-4">
+                                        <select name="month" class="order-month">
+                                            <option value="" >@lang('site.select-month')</option>
+{{--                                            {{$currentMonth == $index ? "selected": ""}}--}}
+                                        @foreach($months as $index => $month)
+                                           <option value="{{$index}}" >{{$month}}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
                                     <div class="col-md-4">
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
                                     </div>

@@ -223,7 +223,7 @@
     </header>
 
     @include('layouts.dashboard._aside')
-    
+
     @yield('content')
 
     @include('partials._session')
@@ -232,8 +232,8 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 2.4.0
         </div>
-        <strong>Copyright &copy; 2014-2016
-            <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright &copy; 2020-2023
+            <a href="">Elsese Store</a>.</strong> All rights
         reserved.
     </footer>
 
@@ -326,7 +326,7 @@
         CKEDITOR.config.language =  "{{ app()->getLocale() }}";
 
     });//end of ready
-    
+
 </script>
 @stack('scripts')
 </body>

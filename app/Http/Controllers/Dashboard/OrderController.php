@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,13 +11,50 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
+
+
+        $currentMonth = Carbon::now()->month;
+
+
+        $months = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $month = Carbon::createFromDate(null, $i, null)->format('F');
+            $months[$i] = $month;
+        }
         $orders = Order::whereHas('client', function ($q) use ($request) {
 
-            return $q->where('name', 'like', '%' . $request->search . '%');
-        })->orderBy('created_at', 'desc')->paginate(10);
+                return $q->where('name', 'like', '%' . $request->search . '%');
 
-        return view('dashboard.orders.index', compact('orders'));
+
+            })->orderBy('created_at', 'desc')->paginate(10);
+
+
+        if ($request->month === null) {
+            $orders = Order::whereHas('client', function ($q) use ($request) {
+
+                return $q->where('name', 'like', '%' . $request->search . '%');
+
+
+            })->orderBy('created_at', 'desc')->paginate(10);
+
+        } elseif ($request->month !== null && $request->search !== null) {
+
+            $orders = Order::whereMonth('created_at', $request->month)
+                ->whereHas('client', function ($q) use ($request) {
+                    return $q->where('name', 'like', '%' . $request->search . '%');
+                })->paginate(10);
+
+        } else {
+            $orders = Order::whereMonth('created_at', $request->month)->paginate(10);
+
+        }
+
+
+
+
+        return view('dashboard.orders.index', compact('orders', 'months', 'currentMonth'));
     } //end of index
+
 
     public function products(Order $order)
     {
@@ -26,14 +64,14 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request)
     {
-        
+
         $order = Order::find($request->id);
         $order->update(['status' => 'deliverd']);
         $order->save();
 
-       
+
         // return redirect()->route('dashboard.orders.index');
-        return response()->json(['success' => true,"trans"=>__("site.{$order->status}")]);
+        return response()->json(['success' => true, "trans" => __("site.{{$order->status}}")]);
     } //end of products
 
     public function destroy(Order $order)

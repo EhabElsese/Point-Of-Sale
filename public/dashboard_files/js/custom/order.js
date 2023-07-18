@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     //add product btn
     $('.add-product-btn').on('click', function (e) {
 
@@ -14,7 +14,7 @@ $(document).ready(function () {
             `<tr>
                 <td>${name}</td>
                 <td><input type="number" name="products[${id}][quantity]" data-price="${price}" class="form-control input-sm product-quantity" min="1" value="1"></td>
-                <td class="product-price">${price}</td>               
+                <td class="product-price">${price}</td>
                 <td><button class="btn btn-danger btn-sm remove-product-btn" data-id="${id}"><span class="fa fa-trash"></span></button></td>
             </tr>`;
 
@@ -62,7 +62,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         $('#loading').css('display', 'flex');
-        
+
         var url = $(this).data('url');
         var method = $(this).data('method');
         $.ajax({
@@ -86,27 +86,28 @@ $(document).ready(function () {
 
     });//end of click function
 
+    // order status
     $(document).on('click', '.order-status-btn', function(e) {
         e.preventDefault();
-    
-    
+
+
             var that = $(this);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    
+
         $.ajax({
             url: that.data('url'),
             type: "post",
             data: {
-            
+
                 id : that.data('id')
             },
-            
+
             success: function(response) {
-                
+
                 new Noty({
                     type: 'success',
                     layout: 'topRight',
@@ -114,9 +115,9 @@ $(document).ready(function () {
                     timeout: 2000,
                     killer: true
                 }).show();
-                
+
                 that.removeClass('btn-warning ').addClass('btn-success disabled').text(response.trans);
-                
+
             },
             error: function(xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);
@@ -124,8 +125,7 @@ $(document).ready(function () {
                 console.log('XHR:', xhr);
             }
         });
-    });
-
+    }); // end of function order status
 });//end of document ready
 
 //calculate the total
@@ -134,7 +134,7 @@ function calculateTotal() {
     var price = 0;
 
     $('.order-list .product-price').each(function(index) {
-        
+
         price += parseFloat($(this).html().replace(/,/g, ''));
 
     });//end of product price
@@ -155,6 +155,6 @@ function calculateTotal() {
 }//end of calculate total
 
 
-// change Order Status 
+// change Order Status
 /* // end or change status
 */
