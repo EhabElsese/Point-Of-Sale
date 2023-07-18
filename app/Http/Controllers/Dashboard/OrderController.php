@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Order;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -23,10 +25,10 @@ class OrderController extends Controller
         }
         $orders = Order::whereHas('client', function ($q) use ($request) {
 
-                return $q->where('name', 'like', '%' . $request->search . '%');
+            return $q->where('name', 'like', '%' . $request->search . '%');
 
 
-            })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(10);
 
 
         if ($request->month === null) {
@@ -44,11 +46,17 @@ class OrderController extends Controller
                     return $q->where('name', 'like', '%' . $request->search . '%');
                 })->paginate(10);
 
+//            $orders = DB::table('orders')
+//                ->join('clients', 'orders.client_id', '=', 'clients.id')
+//                ->whereMonth('orders.created_at', '=', $request->month)
+//                ->where('clients.name', 'like', '%'.$request->search.'%')
+//                ->select('orders.*','clients.name as client_name')
+//                ->paginate(10);
+
         } else {
             $orders = Order::whereMonth('created_at', $request->month)->paginate(10);
 
         }
-
 
 
 

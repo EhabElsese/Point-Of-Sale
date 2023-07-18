@@ -85,6 +85,7 @@
                                                     <button type="submit" class="order-status-btn btn  {{$order->status == 'pending' ? 'btn-warning' : 'btn-success disabled' }}  btn-sm"></i> @lang('site.' . $order->status)</button>
                                                 </form> --}}
                                             </td>
+{{--                                            {{ $order->created_at->toFormattedDateString() }}--}}
                                             <td>{{ $order->created_at->toFormattedDateString() }}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm order-products"
@@ -95,7 +96,7 @@
                                                     @lang('site.show')
                                                 </button>
                                                 @if (auth()->user()->hasPermission('update_orders')&& $order->status == 'pending')
-                                                    <a href="{{ route('dashboard.clients.orders.edit', ['client' => $order->client->id, 'order' => $order->id]) }}" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> @lang('site.edit')</a>
+                                                    <a href="{{ route('dashboard.clients.orders.edit', ['client' => $order->client_id, 'order' => $order->id]) }}" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> @lang('site.edit')</a>
                                                 @else
                                                     <a href="#" disabled class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
                                                 @endif
@@ -119,7 +120,7 @@
 
                                 </table><!-- end of table -->
 
-                                {{ $orders->appends(request()->query())->links() }}
+                           {{ $orders->appends(request()->query())->links() }}
 
                             </div>
 
