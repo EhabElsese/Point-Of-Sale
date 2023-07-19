@@ -111,12 +111,12 @@ $(document).ready(function () {
                 new Noty({
                     type: 'success',
                     layout: 'topRight',
-                    text: "{{ __(site.updated_successfully) }}",
+                    text :response.trans,
                     timeout: 2000,
                     killer: true
                 }).show();
 
-                that.removeClass('btn-warning ').addClass('btn-success disabled').text(response.trans);
+                that.removeClass('btn-warning ').addClass('btn-success').prop('disabled',true).text(response.trans);
 
             },
             error: function(xhr, textStatus, errorThrown) {

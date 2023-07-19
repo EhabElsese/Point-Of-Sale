@@ -75,8 +75,8 @@
                                                 <button name="order_status"
                                                     data-url="{{ route('dashboard.orders.update_status') }}"
                                                     data-id="{{ $order->id }}"
-                                                    value="{{ $order->status}}"
-                                                    class="order-status-btn btn {{$order->status == 'pending' ? 'btn-warning' : 'btn-success disabled' }}   btn-sm" >
+                                                    value="{{ $order->status}}" {{$order->status == 'pending' ? '' : 'disabled' }}
+                                                    class="order-status-btn btn  {{$order->status == 'pending' ? 'btn-warning' : 'btn-success disabled' }}  btn-sm" >
                                                     @lang('site.' . $order->status)
                                                 </button>
                                                 {{-- <form action="{{ route('dashboard.orders.update_status', $order->id) }}" method="post" style="display: inline-block;">

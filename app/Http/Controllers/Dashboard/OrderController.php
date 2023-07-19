@@ -29,7 +29,9 @@ class OrderController extends Controller
             $query->where('clients.name', 'like', '%' . $request->search . '%');
         }
 
-        $orders = $query->select('orders.*', 'clients.name as client_name')->paginate(10);
+        $orders = $query->select('orders.*', 'clients.name as client_name',
+            DB::raw('DATE_FORMAT(orders.created_at,"%Y-%m-%d") as created_at')
+        )->paginate(10);
 
         return view('dashboard.orders.index', compact('orders', 'months'));
     } //end of index
@@ -50,7 +52,7 @@ class OrderController extends Controller
 
 
         // return redirect()->route('dashboard.orders.index');
-        return response()->json(['success' => true, "trans" => __("site.{{$order->status}}")]);
+        return response()->json(['success' => true, "trans" => __("site.$order->status")]);
     } //end of products
 
     public function destroy(Order $order)

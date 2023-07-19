@@ -35,6 +35,10 @@ class OrderController extends Controller
 
     public function edit(Client $client, Order $order)
     {
+
+        if($order->status == "deliverd"){
+            abort(404);
+        }
         $categories = Category::with('products')->get();
         $orders = $client->orders()->with('products')->paginate(5);
         return view('dashboard.clients.orders.edit', compact('client', 'order', 'categories', 'orders'));
