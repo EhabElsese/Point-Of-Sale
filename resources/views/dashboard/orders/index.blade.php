@@ -38,9 +38,9 @@
                                     <div class="col-md-4">
                                         <select name="month" class="order-month">
                                             <option value="" >@lang('site.select-month')</option>
-{{--                                            {{$currentMonth == $index ? "selected": ""}}--}}
+                                          
                                         @foreach($months as $index => $month)
-                                           <option value="{{$index}}" >{{$month}}</option>
+                                           <option   {{request('month') == $index ? "selected": ""}} value="{{$index}}" >{{$month}}</option>
                                         @endforeach
                                         </select>
                                     </div>
@@ -69,7 +69,7 @@
 
                                     @foreach ($orders as $order)
                                         <tr>
-                                            <td>{{ $order->client->name }}</td>
+                                            <td>{{ $order->client_name}}</td>
                                             <td>{{ number_format($order->total_price, 2) }}</td>
                                             <td>
                                                 <button name="order_status"
@@ -86,7 +86,7 @@
                                                 </form> --}}
                                             </td>
 {{--                                            {{ $order->created_at->toFormattedDateString() }}--}}
-                                            <td>{{ $order->created_at->toFormattedDateString() }}</td>
+                                            <td>{{ $order->created_at }}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm order-products"
                                                         data-url="{{ route('dashboard.orders.products', $order->id) }}"

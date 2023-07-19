@@ -13,54 +13,25 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-
-
-        $currentMonth = Carbon::now()->month;
-
-
         $months = [];
         for ($i = 1; $i <= 12; $i++) {
             $month = Carbon::createFromDate(null, $i, null)->format('F');
             $months[$i] = $month;
         }
-        $orders = Order::whereHas('client', function ($q) use ($request) {
+     
+        $query = DB::table('orders')->join('clients', 'orders.client_id', '=', 'clients.id');
 
-            return $q->where('name', 'like', '%' . $request->search . '%');
-
-
-        })->orderBy('created_at', 'desc')->paginate(10);
-
-
-        if ($request->month === null) {
-            $orders = Order::whereHas('client', function ($q) use ($request) {
-
-                return $q->where('name', 'like', '%' . $request->search . '%');
-
-
-            })->orderBy('created_at', 'desc')->paginate(10);
-
-        } elseif ($request->month !== null && $request->search !== null) {
-
-            $orders = Order::whereMonth('created_at', $request->month)
-                ->whereHas('client', function ($q) use ($request) {
-                    return $q->where('name', 'like', '%' . $request->search . '%');
-                })->paginate(10);
-
-//            $orders = DB::table('orders')
-//                ->join('clients', 'orders.client_id', '=', 'clients.id')
-//                ->whereMonth('orders.created_at', '=', $request->month)
-//                ->where('clients.name', 'like', '%'.$request->search.'%')
-//                ->select('orders.*','clients.name as client_name')
-//                ->paginate(10);
-
-        } else {
-            $orders = Order::whereMonth('created_at', $request->month)->paginate(10);
-
+        if ($request->month) {
+            $query->whereMonth('orders.created_at', '=', $request->month);
         }
 
+        if ($request->search) {
+            $query->where('clients.name', 'like', '%' . $request->search . '%');
+        }
 
+        $orders = $query->select('orders.*', 'clients.name as client_name')->paginate(10);
 
-        return view('dashboard.orders.index', compact('orders', 'months', 'currentMonth'));
+        return view('dashboard.orders.index', compact('orders', 'months'));
     } //end of index
 
 
