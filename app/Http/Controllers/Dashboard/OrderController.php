@@ -18,7 +18,7 @@ class OrderController extends Controller
             $month = Carbon::createFromDate(null, $i, null)->format('F');
             $months[$i] = $month;
         }
-     
+
         $query = DB::table('orders')->join('clients', 'orders.client_id', '=', 'clients.id');
 
         if ($request->month) {
@@ -30,7 +30,7 @@ class OrderController extends Controller
         }
 
         $orders = $query->select('orders.*', 'clients.name as client_name',
-            DB::raw('DATE_FORMAT(orders.created_at,"%Y-%m-%d") as created_at')
+            DB::raw('DATE_FORMAT(orders.created_at,"%Y-%M-%d") as created_at')
         )->paginate(10);
 
         return view('dashboard.orders.index', compact('orders', 'months'));

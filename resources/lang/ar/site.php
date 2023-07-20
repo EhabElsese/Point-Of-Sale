@@ -89,7 +89,8 @@ return [
     'date-bill' => 'تاريخ الفاتوره',
     'clock' => 'الساعه',
     'Sales-Graph' => 'رسم المبيعات البيانى',
-    'select-month' => 'اختر الشهر'
+    'all-months' => 'كل الشهور',
+    'reports'=>'التقارير'
 
 
 ];

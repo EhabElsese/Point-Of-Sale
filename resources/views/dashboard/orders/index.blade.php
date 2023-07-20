@@ -37,8 +37,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <select name="month" class="order-month">
-                                            <option value="" >@lang('site.select-month')</option>
-                                          
+                                            <option value="" >@lang('site.all-months')</option>
+
                                         @foreach($months as $index => $month)
                                            <option   {{request('month') == $index ? "selected": ""}} value="{{$index}}" >{{$month}}</option>
                                         @endforeach
