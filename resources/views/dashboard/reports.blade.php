@@ -74,7 +74,7 @@
 
                                 <table class="table table-hover">
                                     <tr>
-                                        <th>#</th>
+                                        
                                         <th>@lang('site.month')</th>
                                         <th>@lang('site.orders')</th>
                                         <th>@lang('site.products')</th>
@@ -84,11 +84,12 @@
 
 
                                         <tr>
-                                            <td>1</td>
-                                            <td>test</td>
+                                            
+                                            <td>{{request('month') != null ? "شهر ". request('month')  : "كل الشهور" }}</td>
                                             <td>{{$order}}</td>
                                             <td>{{$product}}</td>
-                                            <td>{{ $sales[0]->total_sales}}</td>
+                                            <td>{{number_format($sales[0]->total_sales,2)}} جنيها</td>
+                                            <td>{{number_format($profit[0]->profit,2) }} جنيها</td>
 
 
                                         </tr>

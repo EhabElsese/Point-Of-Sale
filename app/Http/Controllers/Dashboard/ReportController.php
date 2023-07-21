@@ -53,13 +53,14 @@ class ReportController extends Controller
             $price_query->whereRaw("YEAR(orders.created_at) = $request->year");
         }
         $order = $order_query->count();
+        $profit = $product_query->selectRaw('SUM(products.sale_price - products.purchase_price) as profit')->get();
         $product = $product_query->count();
         $sales = $price_query->selectRaw("SUM(orders.total_price) as total_sales")->get();
 
-        //dd($order,$product,$sales);
+       // dd($profit);
 
 
 
-        return view('dashboard.reports', compact('order','product','sales', 'years','months','days'));
+        return view('dashboard.reports', compact('order','product','sales','profit', 'years','months','days'));
     } //end of index
 }
