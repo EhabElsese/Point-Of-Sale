@@ -26,7 +26,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             //Report routes
             Route::get('monthly-report', 'ReportController@monthlyReport')->name('monthlyReport');
-            Route::get('yearly-report', 'ReportController@yearlyReport')->name('yearlyReport');
 
             //Revenue routes
             Route::resource('revenues', 'RevenueController')->only(['index']);

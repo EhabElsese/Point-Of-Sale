@@ -38,7 +38,7 @@
                                             <option value="">@lang('site.from-day')</option>
 
                                             @foreach ($days as $index => $day)
-                                                <option {{ request('day') == $index ? 'selected' : '' }}
+                                                <option {{ request('from_day') == $index ? 'selected' : '' }}
                                                     value="{{ $index }}">{{ $day }}</option>
                                             @endforeach
                                         </select>
@@ -48,7 +48,7 @@
                                             <option value="">@lang('site.to-day')</option>
 
                                             @foreach ($days as $index => $day)
-                                                <option {{ request('day') == $index ? 'selected' : '' }}
+                                                <option {{ request('to_day') == $index ? 'selected' : '' }}
                                                     value="{{ $index }}">{{ $day }}</option>
                                             @endforeach
                                         </select>
@@ -84,19 +84,32 @@
 
                         </div><!-- end of box header -->
 
-                        @if ($order_count > 0)
+                        @if ($orders_count > 0)
                             <div class="box-body table-responsive" id="div-to-export">
 
                                 <table class="table table-hover revenues-table" id="table-to-export">
                                     <tr>
                                         <th>#</th>
                                         <th>@lang('site.date')</th>
-                                        <th>@lang('site.orders-number')</th>
+                                        <th>@lang('site.orders-counts')</th>
                                         <th>@lang('site.products')</th>
                                         <th>@lang('site.all-sales')</th>
                                         <th>@lang('site.all-profit')</th>
                                         <th>@lang('site.action')</th>
                                     </tr>
+
+                                    @foreach ($orders as $index => $order)
+                                        <tr>
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{$order->created_at}}</td>
+                                            <td>{{$order->order_count}}</td>
+                                            <td>{{$order->quantity}}</td>
+                                            <td>{{$order->total_sales}}</td>
+                                            <td>{{$order->profit}}</td>
+                                            <td><a href="{{route("dashboard.revenues.index",[ 'day' => date("d", strtotime($order->created_at)),'month' => date("m", strtotime($order->created_at)) ,'year' => date("Y", strtotime($order->created_at))])}}" class="bt n btn-primary btn-sm">@lang('site.show')</a></td>
+                                        </tr>
+                                        
+                                    @endforeach
                                     
 
                                 </table><!-- end of table -->
