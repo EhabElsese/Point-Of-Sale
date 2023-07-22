@@ -31,7 +31,7 @@ class OrderController extends Controller
 
         $orders = $query->select('orders.*', 'clients.name as client_name',
             DB::raw('DATE_FORMAT(orders.created_at,"%Y-%M-%d") as created_at')
-        )->paginate(10);
+        )->latest()->paginate(10);
 
         return view('dashboard.orders.index', compact('orders', 'months'));
     } //end of index
@@ -54,7 +54,18 @@ class OrderController extends Controller
         // return redirect()->route('dashboard.orders.index');
         return response()->json(['success' => true, "trans" => __("site.$order->status")]);
     } //end of products
+    public function show ($id) {
 
+
+        $orders = DB::table('orders')->join('clients', 'orders.client_id', '=', 'clients.id')->where('orders.id','=',$id)->select('orders.*', 'clients.name as client_name',
+        DB::raw('DATE_FORMAT(orders.created_at,"%Y-%M-%d") as created_at'))->paginate();
+
+        //dd($orders);
+
+        return view('dashboard.orders.show',compact('orders'));
+
+        
+    }
     public function destroy(Order $order)
     {
         foreach ($order->products as $product) {

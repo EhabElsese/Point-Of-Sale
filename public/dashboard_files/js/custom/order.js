@@ -126,6 +126,7 @@ $(document).ready(function () {
             }
         });
     }); // end of function order status
+
 });//end of document ready
 
 //calculate the total
@@ -154,7 +155,17 @@ function calculateTotal() {
 
 }//end of calculate total
 
-
+// export to excel sheet
+function exportToExcel() {
+    // Get the div content
+    var divContent = document.getElementById("div-to-export").innerHTML;
+  
+    // Convert the div content to an Excel sheet using SheetJS
+    var workbook = XLSX.utils.table_to_book(document.getElementById("table-to-export"));
+  
+    // Download the Excel sheet as a file
+    XLSX.writeFile(workbook, 'exported-data.xlsx');
+  }
 // change Order Status
 /* // end or change status
 */

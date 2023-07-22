@@ -24,9 +24,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::post('/orders/updateStatus', 'OrderController@updateStatus')->name('orders.update_status');
 
 
-            //order routes
-            Route::resource('reports', 'ReportController')->only(['index']);
+            //Report routes
+            Route::get('monthly-report', 'ReportController@monthlyReport')->name('monthlyReport');
+            Route::get('yearly-report', 'ReportController@yearlyReport')->name('yearlyReport');
 
+            //Revenue routes
+            Route::resource('revenues', 'RevenueController')->only(['index']);
 
             //user routes
             Route::resource('users', 'UserController')->except(['show']);

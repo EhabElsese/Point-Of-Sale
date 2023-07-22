@@ -90,12 +90,18 @@ return [
     'clock' => 'الساعه',
     'Sales-Graph' => 'رسم المبيعات البيانى',
     'all-months' => 'كل الشهور',
-    'reports'=>'التقارير',
+    'monthly-report'=>'التقرير الشهري',
+    'yearly-report'=>'التقرير السنوى',
     'all-days'=>'كل الايام',
     'all-years'=>'كل السنوات',
     'month' =>'الشهر',
     'all-sales'=>'اجمالى المبيعات',
-    'all-profit'=>'اجمالى المكسب'
+    'all-profit'=>'اجمالى المكسب',
+    'orders-number'=>'رقم الطلب',
+    'revenues'=>'الايرادات',
+    'from-day'=>'من يوم',
+    'to-day'=>"الى يوم",
+    'date'=>'التاريخ'
 
 
 ];

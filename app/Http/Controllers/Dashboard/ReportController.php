@@ -11,7 +11,62 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(Request $request)
+    public function monthlyReport(Request $request)
+    {
+        $years = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $year = 2000;
+            $years[$i] = $year + $i;
+        }
+
+        $months = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $month = Carbon::createFromDate(null, $i, null)->format('F');
+            $months[$i] = $month;
+        }
+        $days = [];
+        for ($i = 1; $i <= 31; $i++) {
+            $day = Carbon::createFromDate(null, null, $i)->format('d');
+            $days[$i] = $day;
+        }
+
+        $query = DB::table('clients')
+            ->join('orders','clients.id','=','orders.client_id')
+            ->join('product_order','orders.id','=','product_order.order_id')
+            ->join('products','product_order.product_id','=','products.id');
+            if($request->from_day && $request->to_day){
+                
+                $query->whereBetween('DAY(orders.created_at)',[$request->from_day,$request->to_day]);
+            }
+            if($request->month){
+                $query->whereRaw("MONTH(orders.created_at) = $request->month");
+            }
+            if($request->year){
+                $query->whereRaw("YEAR(orders.created_at) = $request->year");
+            }
+        $order_count = $query->select('orders.*')->count();
+
+        $orders = $query->selectRaw('clients.name as client_name, orders.id as order_id , SUM(product_order.quantity) as quantity, SUM(orders.total_price) as total_price , orders.status as status,SUM(orders.total_price) as total_sales ,SUM(products.sale_price - products.purchase_price) as profit' )
+        ->groupBy('order_id')->latest()->get();
+
+            $total_profit = collect($orders)->sum('profit');
+
+            $total_sales = collect($orders)->sum('total_sales');
+
+            $total_product = collect($orders)->sum('quantity');
+        
+
+
+
+
+
+        return view('dashboard.monthlyReports',compact('years','months','days','order_count','orders','total_profit','total_sales','total_product'));
+
+        
+    } //end of index
+
+
+    public function yearlyReport(Request $request)
     {
         $years = [];
         for ($i = 1; $i <= 100; $i++) {
@@ -61,6 +116,6 @@ class ReportController extends Controller
 
 
 
-        return view('dashboard.reports', compact('order','product','sales','profit', 'years','months','days'));
-    } //end of index
+        return view('dashboard.monthlyReports', compact('order','product','sales','profit', 'years','months','days'));
+    } //end of yearlyReport
 }
