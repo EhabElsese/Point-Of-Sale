@@ -12,7 +12,7 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
 
-        $categories = ['cat one', 'cat two', 'cat three'];
+        $categories = ['القسم الاول', 'القسم الثانى', 'القسم الثالث'];
 
         foreach ($categories as $category) {
 

@@ -33,9 +33,9 @@
             @endif
                 <li><a href="{{ route('dashboard.revenues.index') }}"><i class="fa fa-th"></i><span>@lang('site.revenues')</span></a></li>
 
-                <li><a href="{{ route('dashboard.monthlyReport') }}"><i class="fa fa-th"></i><span>@lang('site.monthly-report')</span></a></li>
+                <li><a href="{{ route('dashboard.monthlyReport') }}"><i class="fa fa-th"></i><span>@lang('site.reports')</span></a></li>
 
-                
+
 
             @if (auth()->user()->hasPermission('read_users'))
                 <li><a href="{{ route('dashboard.users.index') }}"><i class="fa fa-th"></i><span>@lang('site.users')</span></a></li>

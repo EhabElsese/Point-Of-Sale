@@ -11,16 +11,16 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        $products = ['pro one', 'pro two'];
+        $products = ['مرتبه', 'مخده','فايبر'];
 
-        foreach ($products as $product) {
+        foreach ($products as $index => $product) {
 
             \App\Product::create([
-                'category_id' => 1,
+                'category_id' => $index + 1,
                 'ar' => ['name' => $product, 'description' => $product . ' desc'],
                 'en' => ['name' => $product, 'description' => $product . ' desc'],
-                'purchase_price' => 100,
-                'sale_price' => 150,
+                'purchase_price' => 1000,
+                'sale_price' => 1500,
                 'stock' => 100,
             ]);
 

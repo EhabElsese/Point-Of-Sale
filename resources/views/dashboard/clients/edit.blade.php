@@ -37,7 +37,7 @@
                         @for ($i = 0; $i < 2; $i++)
                             <div class="form-group">
                                 <label>@lang('site.phone')</label>
-                                <input type="text" name="phone[]" class="form-control" value="{{ $client->phone[$i] ?? '' }}">
+                                <input type="text" name="phone[]" class="form-control" value="{{ $client->phone[$i] ?? ''}}">
                             </div>
                         @endfor
 

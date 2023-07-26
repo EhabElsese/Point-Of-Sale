@@ -49,7 +49,10 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
+       // dd($client->phone[0]);
         return view('dashboard.clients.edit', compact('client'));
+
+
 
     }//end of edit
 

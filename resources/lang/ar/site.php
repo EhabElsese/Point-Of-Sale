@@ -90,7 +90,7 @@ return [
     'clock' => 'الساعه',
     'Sales-Graph' => 'رسم المبيعات البيانى',
     'all-months' => 'كل الشهور',
-    'monthly-report'=>'التقرير الشهري',
+    'reports'=>'التقارير ',
     'yearly-report'=>'التقرير السنوى',
     'all-days'=>'كل الايام',
     'all-years'=>'كل السنوات',
@@ -102,7 +102,10 @@ return [
     'from-day'=>'من يوم',
     'to-day'=>"الى يوم",
     'date'=>'التاريخ',
-    'orders-counts' => 'عدد الطلبات '
+    'orders-counts' => 'عدد الطلبات ',
+    'cat one'=>'القسم الاول',
+    'cat two'=>'القسم الثانى',
+    'cat three'=>'القسم الثالث'
 
 
 ];

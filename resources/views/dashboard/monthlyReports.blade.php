@@ -5,12 +5,12 @@
 
         <section class="content-header">
 
-            <h1>@lang('site.revenues')
+            <h1>@lang('site.reports')
             </h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.revenues')</li>
+                <li class="active">@lang('site.reports')</li>
             </ol>
         </section>
 
@@ -24,7 +24,7 @@
 
                         <div class="box-header">
 
-                            <h3 class="box-title" style="margin-bottom: 10px">@lang('site.revenues')</h3>
+                            <h3 class="box-title" style="margin-bottom: 10px">@lang('site.reports')</h3>
 
                             <br>
                             <hr>
@@ -104,13 +104,13 @@
                                             <td>{{$order->created_at}}</td>
                                             <td>{{$order->order_count}}</td>
                                             <td>{{$order->quantity}}</td>
-                                            <td>{{$order->total_sales}}</td>
-                                            <td>{{$order->profit}}</td>
+                                            <td>{{$order->total_price}}</td>
+                                            <td>{{$order->profit }}</td>
                                             <td><a href="{{route("dashboard.revenues.index",[ 'day' => date("d", strtotime($order->created_at)),'month' => date("m", strtotime($order->created_at)) ,'year' => date("Y", strtotime($order->created_at))])}}" class="bt n btn-primary btn-sm">@lang('site.show')</a></td>
                                         </tr>
-                                        
+
                                     @endforeach
-                                    
+
 
                                 </table><!-- end of table -->
 

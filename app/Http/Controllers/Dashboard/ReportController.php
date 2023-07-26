@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 
-
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,40 +30,36 @@ class ReportController extends Controller
         }
 
         $query = DB::table('clients')
-            ->join('orders','clients.id','=','orders.client_id')
-            ->join('product_order','orders.id','=','product_order.order_id')
-            ->join('products','product_order.product_id','=','products.id');
-            if($request->from_day && $request->to_day){
-                
-                $query->whereBetween(DB::raw('DAY(orders.created_at)'),[$request->from_day,$request->to_day]);
-            }
-            if($request->month){
-                $query->whereRaw("MONTH(orders.created_at) = $request->month");
-            }
-            if($request->year){
-                $query->whereRaw("YEAR(orders.created_at) = $request->year");
-            }
-        $orders_count = $query->select('orders.*')->count();
+            ->join('orders', 'clients.id', '=', 'orders.client_id')
+            ->join('product_order', 'orders.id', '=', 'product_order.order_id')
+            ->join('products', 'product_order.product_id', '=', 'products.id');
+        if ($request->from_day && $request->to_day) {
 
-        $orders = $query->selectRaw('DATE(orders.created_at) as created_at,COUNT(orders.id) as order_count ,clients.name as client_name, SUM(product_order.quantity) as quantity, SUM(orders.total_price) as total_price , orders.status as status,SUM(orders.total_price) as total_sales ,SUM(products.sale_price - products.purchase_price) as profit' )
-        ->groupBy('created_at')->latest()->get();
+            $query->whereBetween(DB::raw('DAY(orders.created_at)'), [$request->from_day, $request->to_day]);
+        }
+        if ($request->month) {
+            $query->whereRaw("MONTH(orders.created_at) = $request->month");
+        }
+        if ($request->year) {
+            $query->whereRaw("YEAR(orders.created_at) = $request->year");
+        }
+        $orders_count = $query->select('orders.id')->count();
 
-            $total_profit = collect($orders)->sum('profit');
+        $orders = $query->selectRaw('DATE(orders.created_at) as created_at,COUNT(orders.id) as order_count , SUM(product_order.quantity) as quantity,SUM(orders.total_price) as total_price, orders.client_id as client_id,SUM(products.sale_price - products.purchase_price) * quantity as profit')
+            ->groupBy(['client_id','created_at'])->latest()->get();
 
-            $total_sales = collect($orders)->sum('total_sales');
-
-            $total_product = collect($orders)->sum('quantity');
-
-            //dd($orders);
-        
+        $total_profit = collect($orders)->sum('profit');
+        $total_sales = collect($orders)->sum('total_price');
+        $total_product = collect($orders)->sum('quantity');
 
 
 
+        dd($orders);
 
 
-        return view('dashboard.monthlyReports',compact('years','months','days','orders_count','orders','total_profit','total_sales','total_product'));
+        return view('dashboard.monthlyReports', compact('years', 'months', 'days', 'orders_count', 'orders', 'total_profit', 'total_sales', 'total_product'));
 
-        
+
     } //end of index
 
 }

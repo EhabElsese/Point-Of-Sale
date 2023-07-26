@@ -38,7 +38,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
                                 @if (auth()->user()->hasPermission('create_products'))
@@ -73,7 +73,7 @@
                                 <th>@lang('site.action')</th>
                             </tr>
                             </thead>
-                            
+
                             <tbody>
                             @foreach ($products as $index=>$product)
                                 <tr>
@@ -82,8 +82,8 @@
                                     <td>{!! $product->description !!}</td>
                                     <td>{{ $product->category->name }}</td>
                                     <td><img src="{{ $product->image_path }}" style="width: 100px"  class="img-thumbnail" alt=""></td>
-                                    <td>{{ $product->purchase_price }}</td>
-                                    <td>{{ $product->sale_price }}</td>
+                                    <td>{{number_format($product->purchase_price,2) }} جنيها</td>
+                                    <td>{{ number_format($product->sale_price,2) }} جنيها</td>
                                     <td>{{ $product->profit_percent }} %</td>
                                     <td>{{ $product->stock }}</td>
                                     <td>
@@ -103,18 +103,18 @@
                                         @endif
                                     </td>
                                 </tr>
-                            
+
                             @endforeach
                             </tbody>
 
                         </table><!-- end of table -->
-                        
+
                         {{ $products->appends(request()->query())->links() }}
-                        
+
                     @else
-                        
+
                         <h2>@lang('site.no_data_found')</h2>
-                        
+
                     @endif
 
                 </div><!-- end of box body -->

@@ -35,7 +35,7 @@ class RevenueController extends Controller
             ->join('product_order','orders.id','=','product_order.order_id')
             ->join('products','product_order.product_id','=','products.id');
             if($request->day){
-                
+
                 $query->whereRaw("DAY(orders.created_at) = $request->day");
             }
             if($request->month){
@@ -46,7 +46,7 @@ class RevenueController extends Controller
             }
         $order_count = $query->select('orders.*')->count();
 
-        $orders = $query->selectRaw('clients.name as client_name, orders.id as order_id , SUM(product_order.quantity) as quantity, SUM(orders.total_price) as total_price , orders.status as status,SUM(orders.total_price) as total_sales ,SUM(products.sale_price - products.purchase_price) as profit' )
+        $orders = $query->selectRaw('clients.name as client_name, orders.id as order_id , SUM(product_order.quantity) as quantity, orders.total_price as total_price , orders.status as status,orders.total_price as total_sales ,SUM(products.sale_price - products.purchase_price) * quantity as profit' )
         ->groupBy('order_id')->latest()->get();
 
             $total_profit = collect($orders)->sum('profit');
@@ -54,7 +54,9 @@ class RevenueController extends Controller
             $total_sales = collect($orders)->sum('total_sales');
 
             $total_product = collect($orders)->sum('quantity');
-        
+
+            
+
 
 
 
