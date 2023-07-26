@@ -84,7 +84,7 @@
 
                         </div><!-- end of box header -->
 
-                        @if ($orders_count > 0)
+                        @if ($orders[0]->number_of_orders > 0)
                             <div class="box-body table-responsive" id="div-to-export">
 
                                 <table class="table table-hover revenues-table" id="table-to-export">
@@ -101,12 +101,12 @@
                                     @foreach ($orders as $index => $order)
                                         <tr>
                                             <td>{{$index + 1}}</td>
-                                            <td>{{$order->created_at}}</td>
-                                            <td>{{$order->order_count}}</td>
-                                            <td>{{$order->quantity}}</td>
-                                            <td>{{$order->total_price}}</td>
-                                            <td>{{$order->profit }}</td>
-                                            <td><a href="{{route("dashboard.revenues.index",[ 'day' => date("d", strtotime($order->created_at)),'month' => date("m", strtotime($order->created_at)) ,'year' => date("Y", strtotime($order->created_at))])}}" class="bt n btn-primary btn-sm">@lang('site.show')</a></td>
+                                            <td>{{$order->date}}</td>
+                                            <td>{{$order->number_of_orders}}</td>
+                                            <td>{{$order->total_quantity}}</td>
+                                            <td>{{$order->total_of_sale}}</td>
+                                            <td>{{$order->total_profit }}</td>
+                                            <td><a href="{{route("dashboard.revenues.index",[ 'day' => date("d", strtotime($order->date)),'month' => date("m", strtotime($order->date)) ,'year' => date("Y", strtotime($order->date))])}}" class="bt n btn-primary btn-sm">@lang('site.show')</a></td>
                                         </tr>
 
                                     @endforeach
@@ -120,7 +120,7 @@
                                         <h3 class="card-title">المجموع الكلى: <span>{{ number_format($total_sales, 2) }}
                                                 جنيها </span></h3>
                                         <hr>
-                                        <h3 class="card-title">المكسب الكلى: <span>{{ number_format($total_profit, 2) }}
+                                        <h3 class="card-title">المكسب الكلى: <span>{{ number_format($total_profits, 2) }}
                                                 جنيها </span></h3>
                                         <hr>
                                         <h3 class="card-title"> عدد المنتجات التى تم بيعها : <span>{{ $total_product }}

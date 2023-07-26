@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 
+use App\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,37 +30,40 @@ class ReportController extends Controller
             $days[$i] = $day;
         }
 
-        $query = DB::table('clients')
-            ->join('orders', 'clients.id', '=', 'orders.client_id')
-            ->join('product_order', 'orders.id', '=', 'product_order.order_id')
-            ->join('products', 'product_order.product_id', '=', 'products.id');
-        if ($request->from_day && $request->to_day) {
+        $query = Order::selectRaw('DATE(orders.created_at) as date')
+    ->selectRaw('COUNT(orders.id) as number_of_orders')
+    ->selectRaw('SUM(products.sale_price * product_order.quantity) as total_of_sale')
+    ->selectRaw('SUM((products.sale_price - products.purchase_price) * product_order.quantity) as total_profit')
+    ->selectRaw('SUM(product_order.quantity) as total_quantity')
+    ->leftJoin('product_order', 'orders.id', '=', 'product_order.order_id')
+    ->leftJoin('products', 'product_order.product_id', '=', 'products.id');
 
+
+        if ($request->from_day && $request->to_day) {
             $query->whereBetween(DB::raw('DAY(orders.created_at)'), [$request->from_day, $request->to_day]);
         }
+
         if ($request->month) {
-            $query->whereRaw("MONTH(orders.created_at) = $request->month");
+            $query->whereMonth('orders.created_at', $request->month);
         }
+
         if ($request->year) {
-            $query->whereRaw("YEAR(orders.created_at) = $request->year");
+            $query->whereYear('orders.created_at', $request->year);
         }
-        $orders_count = $query->select('orders.id')->count();
-
-        $orders = $query->selectRaw('DATE(orders.created_at) as created_at,COUNT(orders.id) as order_count , SUM(product_order.quantity) as quantity,SUM(orders.total_price) as total_price, orders.client_id as client_id,SUM(products.sale_price - products.purchase_price) * quantity as profit')
-            ->groupBy(['client_id','created_at'])->latest()->get();
-
-        $total_profit = collect($orders)->sum('profit');
-        $total_sales = collect($orders)->sum('total_price');
-        $total_product = collect($orders)->sum('quantity');
 
 
 
-        dd($orders);
+        // Get the grouped results
+        $orders = $query->groupBy('date')->orderBy('date', 'desc')->get();
+
+        $total_profits = collect($orders)->sum('total_profit');
+        $total_sales = collect($orders)->sum('total_of_sale');
+        $total_product = collect($orders)->sum('total_quantity');
+
+       // dd($orders);
 
 
-        return view('dashboard.monthlyReports', compact('years', 'months', 'days', 'orders_count', 'orders', 'total_profit', 'total_sales', 'total_product'));
-
-
+        return view('dashboard.monthlyReports', compact('years', 'months', 'days', 'orders', 'total_profits', 'total_sales', 'total_product'));
     } //end of index
 
 }
