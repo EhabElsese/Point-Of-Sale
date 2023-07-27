@@ -30,7 +30,11 @@ class WelcomeController extends Controller
         ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total_price) as sum')
         ->groupBy('month','year')
         ->get();
-        return view('dashboard.welcome', compact('categories_count', 'products_count', 'clients_count', 'users_count', 'sales_data'));
+        $sales_data2 = DB::table('orders')
+        ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total_price) as sum')
+        ->groupBy('month','year')
+        ->get();
+        return view('dashboard.welcome', compact('categories_count', 'products_count', 'clients_count', 'users_count', 'sales_data','sales_data2'));
     
     }//end of index
     
