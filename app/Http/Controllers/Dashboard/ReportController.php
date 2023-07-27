@@ -31,12 +31,12 @@ class ReportController extends Controller
         }
 
         $query = Order::selectRaw('DATE(orders.created_at) as date')
-    ->selectRaw('COUNT(orders.id) as number_of_orders')
-    ->selectRaw('SUM(products.sale_price * product_order.quantity) as total_of_sale')
-    ->selectRaw('SUM((products.sale_price - products.purchase_price) * product_order.quantity) as total_profit')
-    ->selectRaw('SUM(product_order.quantity) as total_quantity')
-    ->leftJoin('product_order', 'orders.id', '=', 'product_order.order_id')
-    ->leftJoin('products', 'product_order.product_id', '=', 'products.id');
+            ->selectRaw('COUNT(DISTINCT orders.id) as number_of_orders')
+            ->selectRaw('SUM(products.sale_price * product_order.quantity) as total_of_sale')
+            ->selectRaw('SUM((products.sale_price - products.purchase_price) * product_order.quantity) as total_profit')
+            ->selectRaw('SUM(product_order.quantity) as total_quantity')
+            ->leftJoin('product_order', 'orders.id', '=', 'product_order.order_id')
+            ->leftJoin('products', 'product_order.product_id', '=', 'products.id');
 
 
         if ($request->from_day && $request->to_day) {
@@ -60,7 +60,7 @@ class ReportController extends Controller
         $total_sales = collect($orders)->sum('total_of_sale');
         $total_product = collect($orders)->sum('total_quantity');
 
-       // dd($orders);
+        // dd($orders);
 
 
         return view('dashboard.monthlyReports', compact('years', 'months', 'days', 'orders', 'total_profits', 'total_sales', 'total_product'));
